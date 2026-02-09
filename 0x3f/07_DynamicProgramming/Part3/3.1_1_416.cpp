@@ -38,3 +38,31 @@ public:
         return dfs(n - 1, sumN);
     }
 };
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sumN = accumulate(nums.begin(), nums.end(), 0);
+        int n = nums.size();
+        if (sumN % 2)
+        {
+            return false;
+        }
+        sumN /= 2;
+        vector<int> dp(sumN + 1);
+        dp[0] = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = sumN; j >= 0; j--)
+            {
+                if (nums[i] > j)
+                {
+                    continue;
+                }
+                dp[j] = dp[j] || dp[j - nums[i]];
+            }
+        }
+        return dp[sumN];
+    }
+};
